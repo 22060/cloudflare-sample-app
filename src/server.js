@@ -1,6 +1,3 @@
-/**
- * The core server that runs on a Cloudflare worker.
- */
 
 import { Router } from 'itty-router';
 import {
@@ -8,7 +5,7 @@ import {
   InteractionType,
   verifyKey,
 } from 'discord-interactions';
-import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
+import { AWW_COMMAND, INVITE_COMMAND, TEST_COMMAND } from './commands.js';
 import { getCuteUrl } from './reddit.js';
 import { InteractionResponseFlags } from 'discord-interactions';
 
@@ -25,12 +22,8 @@ class JsonResponse extends Response {
 }
 
 const router = Router();
-
-/**
- * A simple :wave: hello page to verify the worker is working.
- */
 router.get('/', (request, env) => {
-  return new Response(`👋 ${env.DISCORD_APPLICATION_ID}`);
+  return new Response(`👋 ${"1162176713904640010"}}`);
 });
 
 /**
@@ -46,17 +39,13 @@ router.post('/', async (request, env) => {
   if (!isValid || !interaction) {
     return new Response('Bad request signature.', { status: 401 });
   }
-
   if (interaction.type === InteractionType.PING) {
-    // The `PING` message is used during the initial webhook handshake, and is
-    // required to configure the webhook in the developer portal.
     return new JsonResponse({
       type: InteractionResponseType.PONG,
     });
   }
 
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-    // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
       case AWW_COMMAND.name.toLowerCase(): {
         const cuteUrl = await getCuteUrl();
@@ -68,7 +57,7 @@ router.post('/', async (request, env) => {
         });
       }
       case INVITE_COMMAND.name.toLowerCase(): {
-        const applicationId = env.DISCORD_APPLICATION_ID;
+        const applicationId = "1162176713904640010";
         const INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${applicationId}&scope=applications.commands`;
         return new JsonResponse({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -78,11 +67,18 @@ router.post('/', async (request, env) => {
           },
         });
       }
+      case TEST_COMMAND.name.toLowerCase(): {
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "pong!",
+          },
+        });
+      }
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
     }
   }
-
   console.error('Unknown Type');
   return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
 });
@@ -95,7 +91,7 @@ async function verifyDiscordRequest(request, env) {
   const isValidRequest =
     signature &&
     timestamp &&
-    verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY);
+    verifyKey(body, signature, timestamp, "bcd999fbfcd4fe0a05207017bb71c13844c165d3f7bd4d32137a28141a3449c1");
   if (!isValidRequest) {
     return { isValid: false };
   }
