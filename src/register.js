@@ -1,4 +1,4 @@
-import { AWW_COMMAND, INVITE_COMMAND,TEST_COMMAND } from './commands.js';
+import { AWW_COMMAND, INVITE_COMMAND,TEST_COMMAND,ADD_ACOUNT,ADD_SHOP,HELP,LOG } from './commands.js';
 import fetch from 'node-fetch';
 
 /**
@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
  * to be run once.
  */
 
-const token = "MTE2MjE3NjcxMzkwNDY0MDAxMA.GEeX1X.qHONr9DVFbEr1pVaNSqgzzC5ooS_1GWZoKcUfA"
+const token = "MTE2MjE3NjcxMzkwNDY0MDAxMA.GIdnSH.mx-_3ttw70VZJYRy4vMpuU0i-Lj8wUbkn8jOTc"
 const applicationId = "1162176713904640010"
 
 if (!token) {
@@ -36,7 +36,7 @@ async function registerCommands(url) {
       Authorization: `Bot ${token}`,
     },
     method: 'PUT',
-    body: JSON.stringify([AWW_COMMAND, INVITE_COMMAND,TEST_COMMAND]),
+    body: JSON.stringify([TEST_COMMAND,ADD_ACOUNT,ADD_SHOP,HELP,LOG]),
   });
 
   if (response.ok) {

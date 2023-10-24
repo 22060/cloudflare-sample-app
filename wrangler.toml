@@ -2,7 +2,13 @@ name = "awwbot"
 main = "./src/server.js"
 compatibility_date="2023-05-18"
 
-# [secrets]
-# DISCORD_TOKEN
+[secrets]
+DISCORD_TOKEN="MTE2MjE3NjcxMzkwNDY0MDAxMA.GWO0pa.Od6OjPt5bx2NDWpsYfva7ddphHtwn2nNKUSK_0"
 # DISCORD_PUBLIC_KEY
 # DISCORD_APPLICATION_ID
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "discordapp1"
+database_id = "381cdf73-79e7-474e-8705-c0f786cf041f"
+preview_database_id = "DB" 
